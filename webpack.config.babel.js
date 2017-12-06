@@ -32,7 +32,12 @@ const config = {
       },
       {
         test: /\.(glsl|frag|vert)$/, loader: 'glslify-loader', exclude: /node_modules/
-      }
+      },
+      {
+        test: /\.(png|jpg|gif|obj|mtl)$/, loader: 'url-loader', exclude: /node_modules/
+      },
+
+
     ]
   },
 
@@ -49,6 +54,12 @@ const config = {
   },
 
   resolve: {
+    alias: {
+
+        'three/MTLLoader': path.join(__dirname, 'node_modules/three/examples/js/loaders/MTLLoader.js'),
+        'three/OBJLoader2': path.join(__dirname, 'node_modules/three/examples/js/loaders/OBJLoader2.js'),
+
+    },
     symlinks: false,
     modules: [path.resolve('node_modules')]
   }
@@ -56,6 +67,9 @@ const config = {
 
 function pluginsList(prod) {
   const plugins = [
+      new webpack.ProvidePlugin({
+          'THREE': 'three'
+      }),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor'],
